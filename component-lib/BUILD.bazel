@@ -1,0 +1,19 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages(name = "node_modules")
+
+ts_project(
+    name = "ts",
+    srcs = ["component.tsx"],
+    declaration = True,
+    transpiler = "tsc",
+    deps = [":node_modules"],
+)
+
+npm_package(
+    name = "component-lib",
+    srcs = [":ts"],
+    visibility = ["//visibility:public"],
+)
